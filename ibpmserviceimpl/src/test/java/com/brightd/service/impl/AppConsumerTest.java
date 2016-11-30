@@ -1,5 +1,6 @@
 package com.brightd.service.impl; 
 
+import com.brightd.service.HelloBPMService;
 import com.brightd.service.HelloService;
 import org.jbpm.services.api.DeploymentService;
 import org.jbpm.services.api.ProcessService;
@@ -32,6 +33,10 @@ public class AppConsumerTest {
     @Resource
     private HelloService helloService;
 
+    @Resource
+    private HelloBPMService helloBPMService;
+
+
 
     @Before
     public void before() throws Exception { 
@@ -50,5 +55,7 @@ public class AppConsumerTest {
     public void testRemoteHello() throws Exception {
         String str = helloService.sayHello("Jessica");
         Assert.assertEquals("Hello Jessica",str);
+        String str1 = helloBPMService.sayHello("");
+        Assert.assertEquals("Hello BPM ",str);
     }
 } 

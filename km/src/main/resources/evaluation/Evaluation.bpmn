@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:g="http://www.jboss.org/drools/flow/gpd" xmlns:tns="http://www.jboss.org/drools" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.mvel.org/2.0" id="Definition" name="" targetNamespace="" typeLanguage="http://www.java.com/javaTypes">
+  <itemDefinition id="_employeeItem" isCollection="false" itemKind="Information" structureRef="String"/>
+  <itemDefinition id="_reasonItem" isCollection="false" itemKind="Information" structureRef="String"/>
+  <itemDefinition id="_performanceItem" isCollection="false" itemKind="Information" structureRef="String"/>
+  <itemDefinition id="_contentItem" isCollection="false" itemKind="Information" structureRef="String"/>
+  <process id="com.sample.evaluation" isClosed="false" isExecutable="true" name="Evaluation" processType="Private" tns:packageName="defaultPackage">
+    <property id="employee" itemSubjectRef="_employeeItem"/>
+    <property id="reason" itemSubjectRef="_reasonItem"/>
+    <property id="performance" itemSubjectRef="_performanceItem"/>
+    <property id="content" itemSubjectRef="_contentItem"/>
+    <startEvent id="_1" name="Start"/>
+    <userTask activiti:exclusive="true" id="_2" name="Self Evaluation">
+      <extensionElements>
+        <tns:onEntry-script scriptFormat="http://www.java.com/java">
+          <tns:script>java.util.Map contentParam = new java.util.HashMap();
+contentParam.put("reason", reason);
+kcontext.setVariable("content", contentParam);</tns:script>
+        </tns:onEntry-script>
+      </extensionElements>
+      <ioSpecification>
+        <dataInput id="_2_ContentInput" isCollection="false" name="Content"/>
+        <dataInput id="_2_CommentInput" isCollection="false" name="Comment"/>
+        <dataInput id="_2_SkippableInput" isCollection="false" name="Skippable"/>
+        <dataInput id="_2_TaskNameInput" isCollection="false" name="TaskName"/>
+        <dataOutput id="_2_performanceOutput" isCollection="false" name="performance"/>
+        <inputSet>
+          <dataInputRefs>_2_ContentInput</dataInputRefs>
+          <dataInputRefs>_2_CommentInput</dataInputRefs>
+          <dataInputRefs>_2_SkippableInput</dataInputRefs>
+          <dataInputRefs>_2_TaskNameInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_2_performanceOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation id="DIA_2_1">
+        <sourceRef>content</sourceRef>
+      </dataInputAssociation>
+      <dataInputAssociation id="DIA_2_2">
+        <assignment id="DIA_2_2_A_1">
+          <from xsi:type="tFormalExpression"><![CDATA[Please perform a self-evalutation.]]></from>
+          <to xsi:type="tFormalExpression"><![CDATA[_2_CommentInput]]></to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation id="DIA_2_3">
+        <assignment id="DIA_2_3_A_1">
+          <from xsi:type="tFormalExpression"><![CDATA[false]]></from>
+          <to xsi:type="tFormalExpression"><![CDATA[_2_SkippableInput]]></to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation id="DIA_2_4">
+        <assignment id="DIA_2_4_A_1">
+          <from xsi:type="tFormalExpression"><![CDATA[Performance Evaluation]]></from>
+          <to xsi:type="tFormalExpression"><![CDATA[_2_TaskNameInput]]></to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation id="DOA_2_1">
+        <sourceRef>_2_performanceOutput</sourceRef>
+      </dataOutputAssociation>
+    </userTask>
+    <userTask activiti:exclusive="true" id="_3" name="PM Evaluation">
+      <extensionElements>
+        <tns:onEntry-script>
+          <tns:script>java.util.Map contentParam = new java.util.HashMap();
+contentParam.put("reason", reason);
+contentParam.put("performance", performance);
+kcontext.setVariable("content", contentParam);</tns:script>
+        </tns:onEntry-script>
+      </extensionElements>
+      <ioSpecification>
+        <dataInput id="_3_ContentInput" isCollection="false" name="Content"/>
+        <dataInput id="_3_CommentInput" isCollection="false" name="Comment"/>
+        <dataInput id="_3_SkippableInput" isCollection="false" name="Skippable"/>
+        <dataInput id="_3_TaskNameInput" isCollection="false" name="TaskName"/>
+        <inputSet>
+          <dataInputRefs>_3_ContentInput</dataInputRefs>
+          <dataInputRefs>_3_CommentInput</dataInputRefs>
+          <dataInputRefs>_3_SkippableInput</dataInputRefs>
+          <dataInputRefs>_3_TaskNameInput</dataInputRefs>
+        </inputSet>
+        <outputSet/>
+      </ioSpecification>
+      <dataInputAssociation id="DIA_3_1">
+        <sourceRef>content</sourceRef>
+      </dataInputAssociation>
+      <dataInputAssociation id="DIA_3_2">
+        <assignment id="DIA_3_2_A_1">
+          <from xsi:type="tFormalExpression"><![CDATA[You need to evaluate #{employee}.]]></from>
+          <to xsi:type="tFormalExpression"><![CDATA[_3_CommentInput]]></to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation id="DIA_3_3">
+        <assignment id="DIA_3_3_A_1">
+          <from xsi:type="tFormalExpression"><![CDATA[false]]></from>
+          <to xsi:type="tFormalExpression"><![CDATA[_3_SkippableInput]]></to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation id="DIA_3_4">
+        <assignment id="DIA_3_4_A_1">
+          <from xsi:type="tFormalExpression"><![CDATA[Performance Evaluation]]></from>
+          <to xsi:type="tFormalExpression"><![CDATA[_3_TaskNameInput]]></to>
+        </assignment>
+      </dataInputAssociation>
+    </userTask>
+    <userTask activiti:exclusive="true" id="_4" name="HR Evaluation">
+      <extensionElements>
+        <tns:onEntry-script scriptFormat="http://www.java.com/java">
+          <tns:script>java.util.Map contentParam = new java.util.HashMap();
+contentParam.put("reason", reason);
+contentParam.put("performance", performance);
+kcontext.setVariable("content", contentParam);</tns:script>
+        </tns:onEntry-script>
+      </extensionElements>
+      <ioSpecification>
+        <dataInput id="_4_ContentInput" isCollection="false" name="Content"/>
+        <dataInput id="_4_CommentInput" isCollection="false" name="Comment"/>
+        <dataInput id="_4_SkippableInput" isCollection="false" name="Skippable"/>
+        <dataInput id="_4_TaskNameInput" isCollection="false" name="TaskName"/>
+        <inputSet>
+          <dataInputRefs>_4_ContentInput</dataInputRefs>
+          <dataInputRefs>_4_CommentInput</dataInputRefs>
+          <dataInputRefs>_4_SkippableInput</dataInputRefs>
+          <dataInputRefs>_4_TaskNameInput</dataInputRefs>
+        </inputSet>
+        <outputSet/>
+      </ioSpecification>
+      <dataInputAssociation id="DIA_4_1">
+        <sourceRef>content</sourceRef>
+      </dataInputAssociation>
+      <dataInputAssociation id="DIA_4_2">
+        <assignment id="DIA_4_2_A_1">
+          <from xsi:type="tFormalExpression"><![CDATA[You need to evaluate #{employee}.]]></from>
+          <to xsi:type="tFormalExpression"><![CDATA[_4_CommentInput]]></to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation id="DIA_4_3">
+        <assignment id="DIA_4_3_A_1">
+          <from xsi:type="tFormalExpression"><![CDATA[false]]></from>
+          <to xsi:type="tFormalExpression"><![CDATA[_4_SkippableInput]]></to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation id="DIA_4_4">
+        <assignment id="DIA_4_4_A_1">
+          <from xsi:type="tFormalExpression"><![CDATA[Performance Evaluation]]></from>
+          <to xsi:type="tFormalExpression"><![CDATA[_4_TaskNameInput]]></to>
+        </assignment>
+      </dataInputAssociation>
+    </userTask>
+    <parallelGateway gatewayDirection="Diverging" id="_5" name="Gateway"/>
+    <parallelGateway gatewayDirection="Converging" id="_6" name="Gateway"/>
+    <endEvent id="_7" name="End">
+      <terminateEventDefinition id="_7_ED_1"/>
+    </endEvent>
+    <sequenceFlow id="_1-_2" sourceRef="_1" targetRef="_2"/>
+    <sequenceFlow id="_5-_3" sourceRef="_5" targetRef="_3"/>
+    <sequenceFlow id="_5-_4" sourceRef="_5" targetRef="_4"/>
+    <sequenceFlow id="_2-_5" sourceRef="_2" targetRef="_5"/>
+    <sequenceFlow id="_4-_6" sourceRef="_4" targetRef="_6"/>
+    <sequenceFlow id="_3-_6" sourceRef="_3" targetRef="_6"/>
+    <sequenceFlow id="_6-_7" sourceRef="_6" targetRef="_7"/>
+  </process>
+  <bpmndi:BPMNDiagram documentation="background=#FFFFFF;count=1;horizontalcount=1;orientation=0;width=842.4;height=1195.2;imageableWidth=832.4;imageableHeight=1185.2;imageableX=5.0;imageableY=5.0" id="Diagram-_1" name="New Diagram">
+    <bpmndi:BPMNPlane bpmnElement="com.sample.evaluation">
+      <bpmndi:BPMNShape bpmnElement="_7" id="Shape-_7">
+        <dc:Bounds height="32.0" width="32.0" x="593.0" y="56.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

@@ -30,3 +30,5 @@ Thumbs.db
 
 #node_modules
 src/main/webapp/node_modules
+
+btm*.tlog

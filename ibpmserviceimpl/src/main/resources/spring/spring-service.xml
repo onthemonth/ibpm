@@ -22,7 +22,7 @@
 
     <dubbo:consumer check="false" />
 
-    <dubbo:protocol name="dubbo" port="20881" />
+    <dubbo:protocol name="dubbo" port="20882" />
 
     <dubbo:registry id="ibpmRegistry"  protocol="zookeeper" address="127.0.0.1:2181"/>
 
@@ -35,5 +35,6 @@
     <dubbo:consumer check="false" />
 
     <import resource="spring-service-provider.xml" />
+    <import resource="spring-jbpm-application.xml" />
 
 </beans>
