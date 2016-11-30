@@ -31,6 +31,6 @@
     <dubbo:consumer check="false" />
 
     <dubbo:reference id="helloService" interface="com.brightd.service.HelloService" check="false" registry="ibpmRegistry" timeout="50000"/>
-    <dubbo:reference id="helloBPMService" interface="com.brightd.service.HelloBPMService" check="false" registry="ibpmRegistry"/>
+    <dubbo:reference id="helloBPMService" interface="com.brightd.service.HelloBPMService" check="false" registry="ibpmRegistry" timeout="50000"/>
 
 </beans>

@@ -30,8 +30,9 @@
     <dubbo:registry address="multicast://127.0.0.1:1234"/>
     -->
     <!-- 使用监控中心 -->
+
     <dubbo:monitor protocol="registry"/>
-    
+
     <dubbo:consumer check="false" />
 
     <import resource="spring-service-provider.xml" />

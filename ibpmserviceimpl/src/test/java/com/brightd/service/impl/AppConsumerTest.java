@@ -56,6 +56,6 @@ public class AppConsumerTest {
         String str = helloService.sayHello("Jessica");
         Assert.assertEquals("Hello Jessica",str);
         String str1 = helloBPMService.sayHello("");
-        Assert.assertEquals("Hello BPM ",str);
+        Assert.assertEquals("Hello BPM ",str1);
     }
 } 
