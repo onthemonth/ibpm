@@ -11,7 +11,6 @@
         <module>ibpmservice</module>
         <module>ibpmserviceimpl</module>
         <module>km</module>
-        <module>mykjar</module>
     </modules>
     <packaging>pom</packaging>
 
