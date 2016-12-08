@@ -13,6 +13,28 @@ import java.util.List;
  */
 public class JBPMUserGroupCallback implements UserGroupCallback {
 
+    public List<String> getGroupsForUser(String userId, List<String> groupIds, List<String> allExistingGroupIds) {
+        List<String> result = new ArrayList<String>();
+        System.out.println("======getGroupsForUser");
+        if ("mary".equals(userId)) {
+            result.add("HR");
+            System.out.println("======HR Group");
+        } else if ("john".equals(userId)) {
+            result.add("PM");
+            System.out.println("======PM Group");
+        }
+        return result;
+    }
+    public boolean existsUser(String arg0) {
+        return true;
+    }
+    public boolean existsGroup(String arg0) {
+        return true;
+    }
+
+
+    /*
+
     @Override
     public boolean existsUser(String userId) {
         return true;
@@ -62,5 +84,5 @@ public class JBPMUserGroupCallback implements UserGroupCallback {
 
         }
 
-    }
+    } */
 }

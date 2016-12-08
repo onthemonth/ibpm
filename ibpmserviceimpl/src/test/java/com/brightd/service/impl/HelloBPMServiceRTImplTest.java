@@ -1,6 +1,6 @@
 package com.brightd.service.impl;
 
-import com.brightd.service.HelloBPMService;
+import com.brightd.service.HelloBPMServiceRT;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.Before;
@@ -12,18 +12,18 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import javax.annotation.Resource;
 
 /**
- * HelloBPMServiceImpl Tester.
+ * HelloBPMServiceRTImpl Tester.
  *
  * @author <Authors name>
  * @version 1.0
- * @since <pre>Nov 29, 2016</pre>
+ * @since <pre>Dec 7, 2016</pre>
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/spring/spring-service.xml"})
-public class HelloBPMServiceImplTest {
+@ContextConfiguration(locations = {"/spring/rt/spring-service-rt.xml"})
+public class HelloBPMServiceRTImplTest {
 
     @Resource
-    private HelloBPMService helloBPMService;
+    private HelloBPMServiceRT helloBPMServiceRT;
 
     @Before
     public void before() throws Exception {
@@ -38,16 +38,7 @@ public class HelloBPMServiceImplTest {
      */
     @Test
     public void testSayHello() throws Exception {
-        Assert.assertNotNull(helloBPMService);
-        Assert.assertNotNull(helloBPMService.sayHello(""));
-    }
-
-    /**
-     * Method: sayHelloKM(String str)
-     */
-    @Test
-    public void testSayHelloKM() throws Exception {
-        Assert.assertNotNull(helloBPMService);
-        Assert.assertNotNull(helloBPMService.sayHelloKM(""));
+        Assert.assertNotNull(helloBPMServiceRT);
+        Assert.assertNotNull(helloBPMServiceRT.sayHello("RT"));
     }
 } 

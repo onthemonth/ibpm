@@ -6,7 +6,7 @@
                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
   <!-- All asset resources are created as beans to be set to runtime environment. -->
-
+    <!--
   <bean id="sample" factory-method="newClassPathResource" class="org.kie.internal.io.ResourceFactory">
     <constructor-arg>
       <value>jbpm/processes/sample.bpmn</value>
@@ -36,6 +36,7 @@
       <value>jbpm/processes/ScriptTask.bpmn2</value>
     </constructor-arg>
   </bean>
+    -->
 
   <!-- Map contains list of all assets used in tests. -->
 

@@ -26,4 +26,16 @@
         <property name="password" value="root" />
     </bean>
 
+
+
+    <!--
+    <bean id="jbpm-ds"
+          class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="com.mysql.jdbc.Driver" />
+        <property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/jbpm" />
+        <property name="user" value="root" />
+        <property name="password" value="root" />
+    </bean>
+    -->
+
 </beans>

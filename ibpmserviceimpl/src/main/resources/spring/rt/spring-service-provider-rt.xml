@@ -13,13 +13,10 @@
 
     <!-- 声明需要暴露的服务接口 -->
 
-    <dubbo:service interface="com.brightd.service.HelloService" ref="helloService" registry="ibpmRegistry"/>
-
-    <dubbo:service interface="com.brightd.service.HelloBPMService" ref="helloBPMService" registry="ibpmRegistry" />
-
+    <dubbo:service interface="com.brightd.service.HelloBPMServiceRT" ref="helloBPMServiceRT" registry="ibpmRegistry" />
 
     <!-- 和本地bean一样实现服务 -->
-    <bean id="helloService" class="com.brightd.service.impl.HelloServiceImpl"/>
-    <bean id="helloBPMService" class="com.brightd.service.impl.HelloBPMServiceImpl" />
+
+    <bean id="helloBPMServiceRT" class="com.brightd.service.impl.HelloBPMServiceRTImpl" />
 
 </beans>
