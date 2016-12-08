@@ -17,9 +17,11 @@
 
     <dubbo:service interface="com.brightd.service.HelloBPMService" ref="helloBPMService" registry="ibpmRegistry" />
 
+    <dubbo:service interface="com.brightd.service.HelloRuntimeDataService" ref="helloRuntimeDataService" registry="ibpmRegistry" />
 
     <!-- 和本地bean一样实现服务 -->
     <bean id="helloService" class="com.brightd.service.impl.HelloServiceImpl"/>
     <bean id="helloBPMService" class="com.brightd.service.impl.HelloBPMServiceImpl" />
+    <bean id="helloRuntimeDataService" class="com.brightd.service.impl.HelloRuntimeDataServiceImpl" />
 
 </beans>

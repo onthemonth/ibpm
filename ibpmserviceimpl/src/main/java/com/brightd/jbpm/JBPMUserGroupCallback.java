@@ -32,6 +32,11 @@ public class JBPMUserGroupCallback implements UserGroupCallback {
         return true;
     }
 
+    @Override
+    public List<String> getGroupsForUser(String s) {
+        return null;
+    }
+
 
     /*
 

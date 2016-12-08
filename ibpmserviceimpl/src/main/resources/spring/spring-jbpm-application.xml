@@ -16,11 +16,7 @@
 
     <context:annotation-config />
     <tx:annotation-driven />
-    <!--
-    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager" />
-    -->
 
-    <!-- transaction configuration -->
 
     <bean id="btmConfig" factory-method="getConfiguration"
           class="bitronix.tm.TransactionManagerServices" />
@@ -35,7 +31,6 @@
         <property name="transactionManager" ref="BitronixTransactionManager" />
         <property name="userTransaction" ref="BitronixTransactionManager" />
     </bean>
-
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" depends-on="transactionManager">
         <property name="dataSource" ref="jbpm-ds" />
@@ -60,9 +55,9 @@
         <constructor-arg name="emf" ref="entityManagerFactory"></constructor-arg>
     </bean>
 
-    <!-- kie-spring TaskServiceFactoryBean 有bug, 暂时不要用-->
+    <!-- kie-spring TaskServiceFactoryBean 有bug, 暂时不要用, instead, use customized FactoryBean-->
 
-    <bean id="taskService" class="org.kie.spring.factorybeans.TaskServiceFactoryBean" destroy-method="close">
+    <bean id="taskService" class="com.brightd.jbpm.TaskServiceBrightdFactoryBean" destroy-method="close">
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
         <property name="transactionManager" ref="transactionManager"/>
         <property name="userGroupCallback" ref="userGroupCallback"/>
@@ -71,7 +66,7 @@
                 <bean class="org.jbpm.services.task.audit.JPATaskLifeCycleEventListener">
                     <constructor-arg value="true"/>
                 </bean>
-
+                <bean class="org.jbpm.services.task.wih.ExternalTaskEventListener" />
             </list>
         </property>
     </bean>

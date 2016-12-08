@@ -6,19 +6,23 @@ import org.jbpm.kie.services.impl.ProcessServiceImpl;
 import org.jbpm.kie.services.impl.RuntimeDataServiceImpl;
 import org.jbpm.kie.services.impl.bpmn2.BPMN2DataServiceImpl;
 import org.jbpm.services.api.DeploymentService;
+import org.jbpm.services.api.model.ProcessInstanceDesc;
 import org.jbpm.services.api.model.DeployedUnit;
 import org.jbpm.services.api.model.DeploymentUnit;
 import org.jbpm.shared.services.impl.TransactionalCommandService;
 import org.kie.api.KieBase;
 import org.kie.api.runtime.manager.RuntimeEngine;
 import org.kie.api.runtime.manager.RuntimeManager;
+import org.kie.api.runtime.query.QueryContext;
 import org.kie.api.task.TaskService;
 import org.kie.api.task.model.TaskSummary;
 import org.kie.internal.io.ResourceFactory;
+import org.kie.internal.query.QueryFilter;
 import org.kie.internal.runtime.conf.RuntimeStrategy;
 import org.kie.internal.utils.KieHelper;
 
 import javax.annotation.Resource;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +76,9 @@ public class HelloBPMServiceImpl implements HelloBPMService{
 
     public String sayHelloKM(String str) {
 
+        List<Long> taskIds =
+                runtimeDataService.getTasksByProcessInstanceId(1L);
+
         KModuleDeploymentUnit deploymentUnit = new KModuleDeploymentUnit("com.brightd", "km", "1.0-SNAPSHOT");
 //        //deploy
         deploymentUnit.setStrategy(RuntimeStrategy.PER_REQUEST);
@@ -86,13 +93,17 @@ public class HelloBPMServiceImpl implements HelloBPMService{
         params.put("reason", "Yearly performance evaluation");
         processService.startProcess(deploymentUnit.getIdentifier(),"com.sample.evaluation", params);
 
-        taskService = runtime.getTaskService();
+        //taskService = runtime.getTaskService();
+
+        Collection definitions = runtimeDataService.getProcesses(new QueryContext());
 
 
         TaskSummary task1 = taskService.getTasksAssignedAsPotentialOwner("krisv", "en-UK").get(0);
         System.out.println("Krisv executing task " + task1.getName() + "(" + task1.getId() + ": " + task1.getDescription() + ")");
         taskService.start(task1.getId(), "krisv");
         taskService.complete(task1.getId(), "krisv", null);
+
+        List<TaskSummary> taskSummaries = runtimeDataService.getTasksAssignedAsPotentialOwner("john", new QueryFilter(0, 10));
 
         // "john", part of the "PM" group, executes a performance evaluation
         TaskSummary task2 = taskService.getTasksAssignedAsPotentialOwner("john", "en-UK").get(0);
@@ -122,6 +133,4 @@ public class HelloBPMServiceImpl implements HelloBPMService{
 
         return "Hello BPM KM "+str;
     }
-
-
 }
