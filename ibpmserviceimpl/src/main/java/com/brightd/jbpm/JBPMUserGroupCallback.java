@@ -22,6 +22,9 @@ public class JBPMUserGroupCallback implements UserGroupCallback {
         } else if ("john".equals(userId)) {
             result.add("PM");
             System.out.println("======PM Group");
+        }else if ("tom".equals(userId)) {
+            result.add("manager");
+            System.out.println("======manager Group");
         }
         return result;
     }

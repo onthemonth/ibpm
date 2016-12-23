@@ -35,9 +35,13 @@
 
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" depends-on="transactionManager">
-        <property name="dataSource" ref="jbpm-ds" />
+        <property name="dataSource" ref="dataSource" />
         <property name="persistenceUnitName" value="org.jbpm.persistence.spring.jta" />
         <property name="persistenceXmlLocation" value="classpath:/META-INF/persistence.xml" />
+    </bean>
+
+    <bean id="entityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 
     <util:properties id="roleProperties" location="classpath:/roles.properties" />
@@ -46,20 +50,17 @@
         <constructor-arg name="userGroups" ref="roleProperties"></constructor-arg>
     </bean>
 
-    <bean id="process" factory-method="newClassPathResource" class="org.kie.internal.io.ResourceFactory">
-        <constructor-arg>
-            <value>process/Evaluation2.bpmn</value>
-        </constructor-arg>
-    </bean>
-
     <bean id="runtimeEnvironment" class="org.kie.spring.factorybeans.RuntimeEnvironmentFactoryBean">
         <property name="type" value="DEFAULT"/>
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
+        <property name="entityManager" ref="entityManager" />
         <property name="UserGroupCallback" ref="userGroupCallback"/>
         <property name="transactionManager" ref="transactionManager"/>
         <property name="assets">
             <map>
-                <entry key-ref="process"><util:constant static-field="org.kie.api.io.ResourceType.BPMN2"/></entry>
+                <entry key-ref="processEvaluation"><util:constant static-field="org.kie.api.io.ResourceType.BPMN2"/></entry>
+                <entry key-ref="processLeave"><util:constant static-field="org.kie.api.io.ResourceType.BPMN2"/></entry>
+                <entry key-ref="processLeaveV3"><util:constant static-field="org.kie.api.io.ResourceType.BPMN2"/></entry>
             </map>
         </property>
     </bean>
@@ -67,6 +68,42 @@
     <bean id="runtimeManager" class="org.kie.spring.factorybeans.RuntimeManagerFactoryBean" destroy-method="close">
         <property name="identifier" value="spring-rm"/>
         <property name="runtimeEnvironment" ref="runtimeEnvironment"/>
+    </bean>
+
+    <bean id="runtimeEngine" class="com.brightd.jbpm.RuntimeEngineRuntimeManagerFactoryBean">
+        <property name="runtimeManager" ref="runtimeManager" />
+    </bean>
+
+    <bean id="taskService" class="com.brightd.jbpm.TaskServiceBrightdRuntimeManagerFactoryBean">
+        <property name="runtimeEngine" ref="runtimeEngine" />
+    </bean>
+
+    <bean id="ksession" class="com.brightd.jbpm.KieSessionRuntimeManagerFactoryBean">
+        <property name="runtimeEngine" ref="runtimeEngine" />
+    </bean>
+
+    <bean id="auditLogService" class="org.jbpm.process.audit.JPAAuditLogService" depends-on="runtimeEnvironment">
+        <constructor-arg value="#{runtimeEnvironment.environment}" />
+        <constructor-arg value="STANDALONE_JTA_SPRING_SHARED_EM" />
+    </bean>
+
+    <!-- process assets -->
+    <bean id="processEvaluation" factory-method="newClassPathResource" class="org.kie.internal.io.ResourceFactory">
+        <constructor-arg>
+            <value>process/Evaluation2.bpmn</value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="processLeave" factory-method="newClassPathResource" class="org.kie.internal.io.ResourceFactory">
+        <constructor-arg>
+            <value>process/leave.bpmn2</value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="processLeaveV3" factory-method="newClassPathResource" class="org.kie.internal.io.ResourceFactory">
+        <constructor-arg>
+            <value>process/leave-v3.bpmn2</value>
+        </constructor-arg>
     </bean>
 
 </beans>

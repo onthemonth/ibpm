@@ -13,6 +13,7 @@ import org.jbpm.shared.services.impl.TransactionalCommandService;
 import org.kie.api.KieBase;
 import org.kie.api.runtime.manager.RuntimeEngine;
 import org.kie.api.runtime.manager.RuntimeManager;
+import org.kie.api.runtime.process.ProcessInstance;
 import org.kie.api.runtime.query.QueryContext;
 import org.kie.api.task.TaskService;
 import org.kie.api.task.model.TaskSummary;
@@ -86,12 +87,15 @@ public class HelloBPMServiceImpl implements HelloBPMService{
 //
         RuntimeManager runtimeManager = deploymentService.getRuntimeManager(deploymentUnit.getIdentifier());
         RuntimeEngine runtime = runtimeManager.getRuntimeEngine(null);
-//
+
 //        // start a new process instance
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("employee", "krisv");
-        params.put("reason", "Yearly performance evaluation");
-        processService.startProcess(deploymentUnit.getIdentifier(),"com.sample.evaluation", params);
+        params.put("reason", "==========Yearly performance evaluation");
+
+
+
+        long instanceid = processService.startProcess(deploymentUnit.getIdentifier(),"com.sample.evaluation", params);
 
         //taskService = runtime.getTaskService();
 
@@ -105,13 +109,24 @@ public class HelloBPMServiceImpl implements HelloBPMService{
 
         List<TaskSummary> taskSummaries = runtimeDataService.getTasksAssignedAsPotentialOwner("john", new QueryFilter(0, 10));
 
+        Map<String, Object> params1 = new HashMap<String, Object>();
+        params1.put("content", "john == Yearly performance evaluation");
+        params1.put("reason", "john == reason");
         // "john", part of the "PM" group, executes a performance evaluation
         TaskSummary task2 = taskService.getTasksAssignedAsPotentialOwner("john", "en-UK").get(0);
         System.out.println("John executing task " + task2.getName() + "(" + task2.getId() + ": " + task2.getDescription() + ")");
         System.out.println(taskService.getTasksAssignedAsPotentialOwner("john", "en-UK").size());
         taskService.claim(task2.getId(), "john");
         taskService.start(task2.getId(), "john");
-        taskService.complete(task2.getId(), "john", null);
+        taskService.complete(task2.getId(), "john", params1);
+        System.out.println("设置instance variable:"+instanceid);
+
+        ProcessInstanceDesc pidesc = runtimeDataService.getProcessInstanceById(instanceid);
+
+        processService.setProcessVariable(instanceid,"reason","john1111111=========reason");
+        //ProcessInstance pi = processService.getProcessInstance(instanceid);
+        Object varibleReason = processService.getProcessInstanceVariable(instanceid,"reason");
+        System.out.println("Retrive varible reason===="+varibleReason);
 
         // "mary", part of the "HR" group, delegates a performance evaluation
         TaskSummary task3 = taskService.getTasksAssignedAsPotentialOwner("mary", "en-UK").get(0);
@@ -132,5 +147,39 @@ public class HelloBPMServiceImpl implements HelloBPMService{
         System.out.println("Process instance completed");
 
         return "Hello BPM KM "+str;
+    }
+
+
+    public String sayHelloLeave(String str) {
+        KModuleDeploymentUnit deploymentUnit = new KModuleDeploymentUnit("com.brightd", "kml", "1.0-SNAPSHOT");
+        //deploy
+        deploymentUnit.setStrategy(RuntimeStrategy.PER_PROCESS_INSTANCE);
+        deploymentService.deploy(deploymentUnit);
+
+        // start a new process instance
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("employee", "krisv");
+        params.put("reason", "take 5 days off");
+        params.put("hours",18);
+
+        long instanceid = processService.startProcess(deploymentUnit.getIdentifier(),"com.brightd.leave", params);
+
+        TaskSummary task1 = taskService.getTasksAssignedAsPotentialOwner("krisv", "en-UK").get(0);
+        System.out.println("Krisv executing task " + task1.getName() + "(" + task1.getId() + ": " + task1.getDescription() + ")");
+
+        Map<String, Object> params1 = new HashMap<String, Object>();
+        params1.put("comment","self comment 1");
+        taskService.start(task1.getId(), "krisv");
+        taskService.complete(task1.getId(), "krisv", params1);
+
+        TaskSummary task2 = taskService.getTasksAssignedAsPotentialOwner("john", "en-UK").get(0);
+        System.out.println("john executing task " + task2.getName() + "(" + task2.getId() + ": " + task2.getDescription() + ")");
+        Map<String, Object> params2 = new HashMap<String, Object>();
+        params2.put("mg_comment_out","manager comment 1");
+        params2.put("r_manager_out","approve");
+        taskService.start(task2.getId(), "john");
+        taskService.complete(task2.getId(), "john", params2);
+
+        return "Hello BPM KML "+str;
     }
 }

@@ -11,6 +11,7 @@
         <module>ibpmservice</module>
         <module>ibpmserviceimpl</module>
         <module>km</module>
+        <module>ibpmdomain</module>
     </modules>
     <packaging>pom</packaging>
 

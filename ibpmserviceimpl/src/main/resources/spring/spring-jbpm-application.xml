@@ -32,6 +32,10 @@
         <property name="userTransaction" ref="BitronixTransactionManager" />
     </bean>
 
+    <bean id="kieSpringTransactionManager" class="org.kie.spring.persistence.KieSpringTransactionManager">
+        <constructor-arg name="ptm" ref="transactionManager"></constructor-arg>
+    </bean>    
+
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" depends-on="transactionManager">
         <property name="dataSource" ref="jbpm-ds" />
         <property name="persistenceUnitName" value="org.jbpm.persistence.spring.jta" />
@@ -53,6 +57,7 @@
 
     <bean id="transactionCmdService" class="org.jbpm.shared.services.impl.TransactionalCommandService">
         <constructor-arg name="emf" ref="entityManagerFactory"></constructor-arg>
+        <constructor-arg name="txm" ref="kieSpringTransactionManager"></constructor-arg>
     </bean>
 
     <!-- kie-spring TaskServiceFactoryBean 有bug, 暂时不要用, instead, use customized FactoryBean-->

@@ -6,10 +6,15 @@
         xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 
     <!-- spring with jta -->
+
     <persistence-unit name="org.jbpm.persistence.spring.jta" transaction-type="JTA">
+        <!--
+        <persistence-unit name="org.jbpm.persistence.jpa" transaction-type="JTA">
+        -->
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <!-- <jta-data-source>java:comp/env/jdbc/jbpm-ds</jta-data-source> -->
 
+        <mapping-file>META-INF/Servicesorm.xml</mapping-file>
         <mapping-file>META-INF/JBPMorm.xml</mapping-file>
         <mapping-file>META-INF/Taskorm.xml</mapping-file>
         <mapping-file>META-INF/TaskAuditorm.xml</mapping-file>
@@ -57,6 +62,15 @@
         <!-- Task Audit Classes -->
         <class>org.jbpm.services.task.audit.impl.model.AuditTaskImpl</class>
         <class>org.jbpm.services.task.audit.impl.model.TaskVariableImpl</class>
+
+
+        <class>org.jbpm.kie.services.impl.model.ProcessInstanceDesc</class>
+        <class>org.jbpm.kie.services.impl.model.NodeInstanceDesc</class>
+        <class>org.jbpm.kie.services.impl.model.VariableStateDesc</class>
+        <class>org.jbpm.kie.services.impl.model.UserTaskInstanceDesc</class>
+
+        <class>org.jbpm.kie.services.impl.store.DeploymentStoreEntry</class>
+        <class>org.jbpm.kie.services.impl.query.persistence.QueryDefinitionEntity</class>
 
         <properties>
             <property name="hibernate.max_fetch_depth" value="3"/>

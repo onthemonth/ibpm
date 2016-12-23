@@ -50,4 +50,13 @@ public class HelloBPMServiceImplTest {
         Assert.assertNotNull(helloBPMService);
         Assert.assertNotNull(helloBPMService.sayHelloKM(""));
     }
+
+    /**
+     * Method: sayHelloKM(String str)
+     */
+    @Test
+    public void testSayHelloLeave() throws Exception {
+        Assert.assertNotNull(helloBPMService);
+        Assert.assertNotNull(helloBPMService.sayHelloLeave(""));
+    }
 } 

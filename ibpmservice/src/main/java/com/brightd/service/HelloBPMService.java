@@ -6,4 +6,5 @@ package com.brightd.service;
 public interface HelloBPMService {
     public String sayHello(String str);
     public String sayHelloKM(String str);
+    public String sayHelloLeave(String str);
 }

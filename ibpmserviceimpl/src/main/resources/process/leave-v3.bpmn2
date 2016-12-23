@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="ItemDefinition_3" structureRef="Boolean" />
+  <itemDefinition id="ItemDefinition_2" structureRef="Integer" />
+  <itemDefinition id="ItemDefinition_1" structureRef="String" />
+  <process processType="Private" isExecutable="true" id="com.birghtd.bpm.leave.v3.leave" name="leave-v3" tns:packageName="com.birghtd.bpm.leave.v3" tns:version="2" >
+
+    <!-- process variables -->
+    <property id="employee" itemSubjectRef="ItemDefinition_1"/>
+    <property id="reason" itemSubjectRef="ItemDefinition_1"/>
+    <property id="hours" itemSubjectRef="ItemDefinition_2"/>
+    <property id="comment" itemSubjectRef="ItemDefinition_1"/>
+    <property id="r_manager" itemSubjectRef="ItemDefinition_1"/>
+    <property id="r_boss" itemSubjectRef="ItemDefinition_1"/>
+    <property id="mg_comment" itemSubjectRef="ItemDefinition_1"/>
+    <property id="boss_comment" itemSubjectRef="ItemDefinition_1"/>
+
+    <laneSet>
+      <lane name="老板" >
+        <flowNodeRef>EndEvent_1</flowNodeRef>
+        <flowNodeRef>EndEvent_2</flowNodeRef>
+        <flowNodeRef>UserTask_3</flowNodeRef>
+        <flowNodeRef>ExclusiveGateway_2</flowNodeRef>
+        <flowNodeRef>ExclusiveGateway_3</flowNodeRef>
+      </lane>
+      <lane name="经理" >
+        <flowNodeRef>UserTask_2</flowNodeRef>
+        <flowNodeRef>ExclusiveGateway_1</flowNodeRef>
+      </lane>
+      <lane name="员工" >
+        <flowNodeRef>StartEvent_2</flowNodeRef>
+        <flowNodeRef>UserTask_1</flowNodeRef>
+      </lane>
+    </laneSet>
+    <!-- nodes -->
+    <startEvent id="StartEvent_2" name="StartProcess"  isInterrupting="true">
+    </startEvent>
+    <userTask id="UserTask_1" name="申请" >
+      <ioSpecification>
+        <dataInput id="UserTask_1_CreatedByInput" name="CreatedBy" />
+        <dataInput id="UserTask_1_CommentInput" name="Comment" />
+        <dataInput id="UserTask_1_SkippableInput" name="Skippable" />
+        <dataInput id="UserTask_1_LocaleInput" name="Locale" />
+        <dataInput id="UserTask_1_TaskNameInput" name="TaskName" />
+        <dataInput id="UserTask_1_GroupIdInput" name="GroupId" />
+        <dataInput id="UserTask_1_PriorityInput" name="Priority" />
+        <inputSet>
+          <dataInputRefs>UserTask_1_CreatedByInput</dataInputRefs>
+          <dataInputRefs>UserTask_1_CommentInput</dataInputRefs>
+          <dataInputRefs>UserTask_1_SkippableInput</dataInputRefs>
+          <dataInputRefs>UserTask_1_LocaleInput</dataInputRefs>
+          <dataInputRefs>UserTask_1_TaskNameInput</dataInputRefs>
+          <dataInputRefs>UserTask_1_GroupIdInput</dataInputRefs>
+          <dataInputRefs>UserTask_1_PriorityInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>UserTask_1_CreatedByInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{employee}</from>
+          <to xsi:type="tFormalExpression">UserTask_1_CreatedByInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>UserTask_1_CommentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">UserTask_1_CommentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>UserTask_1_SkippableInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">false</from>
+          <to xsi:type="tFormalExpression">UserTask_1_SkippableInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>UserTask_1_LocaleInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">en-UK</from>
+          <to xsi:type="tFormalExpression">UserTask_1_LocaleInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>UserTask_1_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Task Name</from>
+          <to xsi:type="tFormalExpression">UserTask_1_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>UserTask_1_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">UserTask_1_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>UserTask_1_PriorityInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">1</from>
+          <to xsi:type="tFormalExpression">UserTask_1_PriorityInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>#{employee}</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <userTask id="UserTask_2" name="经理审批" >
+      <ioSpecification>
+        <dataInput id="UserTask_2_CreatedByInput" name="CreatedBy" />
+        <dataInput id="UserTask_2_CommentInput" name="Comment" />
+        <dataInput id="UserTask_2_SkippableInput" name="Skippable" />
+        <dataInput id="UserTask_2_LocaleInput" name="Locale" />
+        <dataInput id="UserTask_2_TaskNameInput" name="TaskName" />
+        <dataInput id="UserTask_2_GroupIdInput" name="GroupId" />
+        <dataInput id="UserTask_2_PriorityInput" name="Priority" />
+        <inputSet>
+          <dataInputRefs>UserTask_2_CreatedByInput</dataInputRefs>
+          <dataInputRefs>UserTask_2_CommentInput</dataInputRefs>
+          <dataInputRefs>UserTask_2_SkippableInput</dataInputRefs>
+          <dataInputRefs>UserTask_2_LocaleInput</dataInputRefs>
+          <dataInputRefs>UserTask_2_TaskNameInput</dataInputRefs>
+          <dataInputRefs>UserTask_2_GroupIdInput</dataInputRefs>
+          <dataInputRefs>UserTask_2_PriorityInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>UserTask_2_CreatedByInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">UserTask_2_CreatedByInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>UserTask_2_CommentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">UserTask_2_CommentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>UserTask_2_SkippableInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">false</from>
+          <to xsi:type="tFormalExpression">UserTask_2_SkippableInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>UserTask_2_LocaleInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">en-UK</from>
+          <to xsi:type="tFormalExpression">UserTask_2_LocaleInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>UserTask_2_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Task Name</from>
+          <to xsi:type="tFormalExpression">UserTask_2_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>UserTask_2_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">PM</from>
+          <to xsi:type="tFormalExpression">UserTask_2_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>UserTask_2_PriorityInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">1</from>
+          <to xsi:type="tFormalExpression">UserTask_2_PriorityInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression></formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <exclusiveGateway id="ExclusiveGateway_1" gatewayDirection="Diverging" >
+    </exclusiveGateway>
+    <endEvent id="EndEvent_1" name="approved" >
+        <terminateEventDefinition />
+    </endEvent>
+    <endEvent id="EndEvent_2" name="rejected" >
+        <terminateEventDefinition />
+    </endEvent>
+    <userTask id="UserTask_3" name="老板审批" >
+      <ioSpecification>
+        <dataInput id="UserTask_3_CreatedByInput" name="CreatedBy" />
+        <dataInput id="UserTask_3_CommentInput" name="Comment" />
+        <dataInput id="UserTask_3_SkippableInput" name="Skippable" />
+        <dataInput id="UserTask_3_LocaleInput" name="Locale" />
+        <dataInput id="UserTask_3_TaskNameInput" name="TaskName" />
+        <dataInput id="UserTask_3_GroupIdInput" name="GroupId" />
+        <dataInput id="UserTask_3_PriorityInput" name="Priority" />
+        <inputSet>
+          <dataInputRefs>UserTask_3_CreatedByInput</dataInputRefs>
+          <dataInputRefs>UserTask_3_CommentInput</dataInputRefs>
+          <dataInputRefs>UserTask_3_SkippableInput</dataInputRefs>
+          <dataInputRefs>UserTask_3_LocaleInput</dataInputRefs>
+          <dataInputRefs>UserTask_3_TaskNameInput</dataInputRefs>
+          <dataInputRefs>UserTask_3_GroupIdInput</dataInputRefs>
+          <dataInputRefs>UserTask_3_PriorityInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>UserTask_3_CreatedByInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">UserTask_3_CreatedByInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>UserTask_3_CommentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">UserTask_3_CommentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>UserTask_3_SkippableInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">false</from>
+          <to xsi:type="tFormalExpression">UserTask_3_SkippableInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>UserTask_3_LocaleInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">en-UK</from>
+          <to xsi:type="tFormalExpression">UserTask_3_LocaleInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>UserTask_3_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Task Name</from>
+          <to xsi:type="tFormalExpression">UserTask_3_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>UserTask_3_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">boss</from>
+          <to xsi:type="tFormalExpression">UserTask_3_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>UserTask_3_PriorityInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">1</from>
+          <to xsi:type="tFormalExpression">UserTask_3_PriorityInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression></formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <exclusiveGateway id="ExclusiveGateway_2" gatewayDirection="Converging" >
+    </exclusiveGateway>
+    <exclusiveGateway id="ExclusiveGateway_3" gatewayDirection="Diverging" >
+    </exclusiveGateway>
+
+    <!-- connections -->
+    <sequenceFlow id="StartEvent_2-UserTask_1" sourceRef="StartEvent_2" targetRef="UserTask_1" />
+    <sequenceFlow id="UserTask_1-UserTask_2" sourceRef="UserTask_1" targetRef="UserTask_2" />
+    <sequenceFlow id="UserTask_2-ExclusiveGateway_1" sourceRef="UserTask_2" targetRef="ExclusiveGateway_1" />
+    <sequenceFlow id="ExclusiveGateway_3-EndEvent_1" sourceRef="ExclusiveGateway_3" targetRef="EndEvent_1" name="approve" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return "approve".equals(r_boss);</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="ExclusiveGateway_2-EndEvent_2" sourceRef="ExclusiveGateway_2" targetRef="EndEvent_2" />
+    <sequenceFlow id="ExclusiveGateway_1-UserTask_3" sourceRef="ExclusiveGateway_1" targetRef="UserTask_3" name="approve" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return "approve".equals(r_manager);</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="ExclusiveGateway_1-ExclusiveGateway_2" sourceRef="ExclusiveGateway_1" targetRef="ExclusiveGateway_2" name="reject" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return "reject".equals(r_manager);</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="ExclusiveGateway_3-ExclusiveGateway_2" sourceRef="ExclusiveGateway_3" targetRef="ExclusiveGateway_2" name="reject" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return "reject".equals(r_boss);</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="UserTask_3-ExclusiveGateway_3" sourceRef="UserTask_3" targetRef="ExclusiveGateway_3" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="com.birghtd.bpm.leave.v3.leave" >
+      <bpmndi:BPMNShape bpmnElement="StartEvent_2" >
+        <dc:Bounds x="102" y="164" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="UserTask_1" >
+        <dc:Bounds x="200" y="163" width="91" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="UserTask_2" >
+        <dc:Bounds x="293" y="384" width="86" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_1" >
+        <dc:Bounds x="440" y="384" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="EndEvent_1" >
+        <dc:Bounds x="306" y="762" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="EndEvent_2" >
+        <dc:Bounds x="164" y="654" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="UserTask_3" >
+        <dc:Bounds x="570" y="653" width="91" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_2" >
+        <dc:Bounds x="305" y="653" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_3" >
+        <dc:Bounds x="450" y="653" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="StartEvent_2-UserTask_1" >
+        <di:waypoint x="126" y="188" />
+        <di:waypoint x="176" y="188" />
+        <di:waypoint x="176" y="188" />
+        <di:waypoint x="200" y="188" />
+        <di:waypoint x="245" y="188" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="UserTask_1-UserTask_2" >
+        <di:waypoint x="245" y="188" />
+        <di:waypoint x="336" y="188" />
+        <di:waypoint x="336" y="384" />
+        <di:waypoint x="336" y="409" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="UserTask_2-ExclusiveGateway_1" >
+        <di:waypoint x="336" y="409" />
+        <di:waypoint x="409" y="409" />
+        <di:waypoint x="440" y="409" />
+        <di:waypoint x="464" y="408" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_3-EndEvent_1" >
+        <di:waypoint x="474" y="677" />
+        <di:waypoint x="475" y="786" />
+        <di:waypoint x="348" y="786" />
+        <di:waypoint x="330" y="786" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_2-EndEvent_2" >
+        <di:waypoint x="329" y="677" />
+        <di:waypoint x="256" y="678" />
+        <di:waypoint x="206" y="678" />
+        <di:waypoint x="188" y="678" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_1-UserTask_3" >
+        <di:waypoint x="464" y="408" />
+        <di:waypoint x="615" y="409" />
+        <di:waypoint x="615" y="653" />
+        <di:waypoint x="615" y="678" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_1-ExclusiveGateway_2" >
+        <di:waypoint x="464" y="408" />
+        <di:waypoint x="465" y="543" />
+        <di:waypoint x="330" y="543" />
+        <di:waypoint x="330" y="653" />
+        <di:waypoint x="329" y="677" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_3-ExclusiveGateway_2" >
+        <di:waypoint x="474" y="677" />
+        <di:waypoint x="403" y="678" />
+        <di:waypoint x="355" y="678" />
+        <di:waypoint x="329" y="677" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="UserTask_3-ExclusiveGateway_3" >
+        <di:waypoint x="615" y="678" />
+        <di:waypoint x="520" y="678" />
+        <di:waypoint x="500" y="678" />
+        <di:waypoint x="474" y="677" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

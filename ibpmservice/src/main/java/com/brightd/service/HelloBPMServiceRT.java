@@ -5,4 +5,8 @@ package com.brightd.service;
  */
 public interface HelloBPMServiceRT {
     public String sayHello(String str);
+    public String sayHelloKml(String str);
+    public String sayHelloKmlPhase2(String str);
+    public String sayHelloKmlLeaveV3(String str);
+    public String sayHelloKmlQuery(String str);
 }
