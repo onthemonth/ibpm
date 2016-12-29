@@ -61,6 +61,18 @@ public class HelloBPMServiceRTImplTest {
     }
 
     @Test
+    public void testSayHelloKmlLeaveV3Phase1() throws Exception {
+        Assert.assertNotNull(helloBPMServiceRT);
+        Assert.assertNotNull(helloBPMServiceRT.sayHelloKmlLeaveV3Phase1("21"));
+    }
+
+    @Test
+    public void testSayHelloKmlLeaveV3Phase2() throws Exception {
+        Assert.assertNotNull(helloBPMServiceRT);
+        Assert.assertNotNull(helloBPMServiceRT.sayHelloKmlLeaveV3Phase2("RT"));
+    }
+
+    @Test
     public void testSayHelloKQuery() throws Exception {
         Assert.assertNotNull(helloBPMServiceRT);
         Assert.assertNotNull(helloBPMServiceRT.sayHelloKmlQuery("RT"));

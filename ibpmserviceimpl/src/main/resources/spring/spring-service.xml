@@ -35,7 +35,7 @@
 
     <dubbo:consumer check="false" />
 
-    <import resource="spring-service-provider.xml" />
-    <import resource="spring-jbpm-application.xml" />
+    <import resource="rt/spring-service-provider-rt.xml" />
+    <import resource="rt/spring-jbpm-application-rt.xml" />
 
 </beans>

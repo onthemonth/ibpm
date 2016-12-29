@@ -1,400 +1,478 @@
-<?xml version="1.0" encoding="UTF-8"?> 
-<definitions id="Definition"
-             targetNamespace="http://www.jboss.org/drools"
-             typeLanguage="http://www.java.com/javaTypes"
-             expressionLanguage="http://www.mvel.org/2.0"
-             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
-             xmlns:g="http://www.jboss.org/drools/flow/gpd"
-             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
-             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
-             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
-             xmlns:tns="http://www.jboss.org/drools">
-
-  <itemDefinition id="ItemDefinition_3" structureRef="Boolean" />
-  <itemDefinition id="ItemDefinition_2" structureRef="Integer" />
-  <itemDefinition id="ItemDefinition_1" structureRef="String" />
-  <process processType="Private" isExecutable="true" id="com.birghtd.bpm.leave.v3.leave" name="leave-v3" tns:packageName="com.birghtd.bpm.leave.v3" tns:version="2" >
-
-    <!-- process variables -->
-    <property id="employee" itemSubjectRef="ItemDefinition_1"/>
-    <property id="reason" itemSubjectRef="ItemDefinition_1"/>
-    <property id="hours" itemSubjectRef="ItemDefinition_2"/>
-    <property id="comment" itemSubjectRef="ItemDefinition_1"/>
-    <property id="r_manager" itemSubjectRef="ItemDefinition_1"/>
-    <property id="r_boss" itemSubjectRef="ItemDefinition_1"/>
-    <property id="mg_comment" itemSubjectRef="ItemDefinition_1"/>
-    <property id="boss_comment" itemSubjectRef="ItemDefinition_1"/>
-
-    <laneSet>
-      <lane name="老板" >
-        <flowNodeRef>EndEvent_1</flowNodeRef>
-        <flowNodeRef>EndEvent_2</flowNodeRef>
-        <flowNodeRef>UserTask_3</flowNodeRef>
-        <flowNodeRef>ExclusiveGateway_2</flowNodeRef>
-        <flowNodeRef>ExclusiveGateway_3</flowNodeRef>
-      </lane>
-      <lane name="经理" >
-        <flowNodeRef>UserTask_2</flowNodeRef>
-        <flowNodeRef>ExclusiveGateway_1</flowNodeRef>
-      </lane>
-      <lane name="员工" >
-        <flowNodeRef>StartEvent_2</flowNodeRef>
-        <flowNodeRef>UserTask_1</flowNodeRef>
-      </lane>
-    </laneSet>
-    <!-- nodes -->
-    <startEvent id="StartEvent_2" name="StartProcess"  isInterrupting="true">
-    </startEvent>
-    <userTask id="UserTask_1" name="申请" >
-      <ioSpecification>
-        <dataInput id="UserTask_1_CreatedByInput" name="CreatedBy" />
-        <dataInput id="UserTask_1_CommentInput" name="Comment" />
-        <dataInput id="UserTask_1_SkippableInput" name="Skippable" />
-        <dataInput id="UserTask_1_LocaleInput" name="Locale" />
-        <dataInput id="UserTask_1_TaskNameInput" name="TaskName" />
-        <dataInput id="UserTask_1_GroupIdInput" name="GroupId" />
-        <dataInput id="UserTask_1_PriorityInput" name="Priority" />
-        <inputSet>
-          <dataInputRefs>UserTask_1_CreatedByInput</dataInputRefs>
-          <dataInputRefs>UserTask_1_CommentInput</dataInputRefs>
-          <dataInputRefs>UserTask_1_SkippableInput</dataInputRefs>
-          <dataInputRefs>UserTask_1_LocaleInput</dataInputRefs>
-          <dataInputRefs>UserTask_1_TaskNameInput</dataInputRefs>
-          <dataInputRefs>UserTask_1_GroupIdInput</dataInputRefs>
-          <dataInputRefs>UserTask_1_PriorityInput</dataInputRefs>
-        </inputSet>
-        <outputSet>
-        </outputSet>
-      </ioSpecification>
-      <dataInputAssociation>
-        <targetRef>UserTask_1_CreatedByInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">#{employee}</from>
-          <to xsi:type="tFormalExpression">UserTask_1_CreatedByInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <targetRef>UserTask_1_CommentInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression"></from>
-          <to xsi:type="tFormalExpression">UserTask_1_CommentInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <targetRef>UserTask_1_SkippableInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">false</from>
-          <to xsi:type="tFormalExpression">UserTask_1_SkippableInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <targetRef>UserTask_1_LocaleInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">en-UK</from>
-          <to xsi:type="tFormalExpression">UserTask_1_LocaleInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <targetRef>UserTask_1_TaskNameInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">Task Name</from>
-          <to xsi:type="tFormalExpression">UserTask_1_TaskNameInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <targetRef>UserTask_1_GroupIdInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression"></from>
-          <to xsi:type="tFormalExpression">UserTask_1_GroupIdInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <targetRef>UserTask_1_PriorityInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">1</from>
-          <to xsi:type="tFormalExpression">UserTask_1_PriorityInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <potentialOwner>
-        <resourceAssignmentExpression>
-          <formalExpression>#{employee}</formalExpression>
-        </resourceAssignmentExpression>
-      </potentialOwner>
-    </userTask>
-    <userTask id="UserTask_2" name="经理审批" >
-      <ioSpecification>
-        <dataInput id="UserTask_2_CreatedByInput" name="CreatedBy" />
-        <dataInput id="UserTask_2_CommentInput" name="Comment" />
-        <dataInput id="UserTask_2_SkippableInput" name="Skippable" />
-        <dataInput id="UserTask_2_LocaleInput" name="Locale" />
-        <dataInput id="UserTask_2_TaskNameInput" name="TaskName" />
-        <dataInput id="UserTask_2_GroupIdInput" name="GroupId" />
-        <dataInput id="UserTask_2_PriorityInput" name="Priority" />
-        <inputSet>
-          <dataInputRefs>UserTask_2_CreatedByInput</dataInputRefs>
-          <dataInputRefs>UserTask_2_CommentInput</dataInputRefs>
-          <dataInputRefs>UserTask_2_SkippableInput</dataInputRefs>
-          <dataInputRefs>UserTask_2_LocaleInput</dataInputRefs>
-          <dataInputRefs>UserTask_2_TaskNameInput</dataInputRefs>
-          <dataInputRefs>UserTask_2_GroupIdInput</dataInputRefs>
-          <dataInputRefs>UserTask_2_PriorityInput</dataInputRefs>
-        </inputSet>
-        <outputSet>
-        </outputSet>
-      </ioSpecification>
-      <dataInputAssociation>
-        <targetRef>UserTask_2_CreatedByInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression"></from>
-          <to xsi:type="tFormalExpression">UserTask_2_CreatedByInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <targetRef>UserTask_2_CommentInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression"></from>
-          <to xsi:type="tFormalExpression">UserTask_2_CommentInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <targetRef>UserTask_2_SkippableInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">false</from>
-          <to xsi:type="tFormalExpression">UserTask_2_SkippableInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <targetRef>UserTask_2_LocaleInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">en-UK</from>
-          <to xsi:type="tFormalExpression">UserTask_2_LocaleInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <targetRef>UserTask_2_TaskNameInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">Task Name</from>
-          <to xsi:type="tFormalExpression">UserTask_2_TaskNameInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <targetRef>UserTask_2_GroupIdInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">PM</from>
-          <to xsi:type="tFormalExpression">UserTask_2_GroupIdInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <targetRef>UserTask_2_PriorityInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">1</from>
-          <to xsi:type="tFormalExpression">UserTask_2_PriorityInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <potentialOwner>
-        <resourceAssignmentExpression>
-          <formalExpression></formalExpression>
-        </resourceAssignmentExpression>
-      </potentialOwner>
-    </userTask>
-    <exclusiveGateway id="ExclusiveGateway_1" gatewayDirection="Diverging" >
-    </exclusiveGateway>
-    <endEvent id="EndEvent_1" name="approved" >
-        <terminateEventDefinition />
-    </endEvent>
-    <endEvent id="EndEvent_2" name="rejected" >
-        <terminateEventDefinition />
-    </endEvent>
-    <userTask id="UserTask_3" name="老板审批" >
-      <ioSpecification>
-        <dataInput id="UserTask_3_CreatedByInput" name="CreatedBy" />
-        <dataInput id="UserTask_3_CommentInput" name="Comment" />
-        <dataInput id="UserTask_3_SkippableInput" name="Skippable" />
-        <dataInput id="UserTask_3_LocaleInput" name="Locale" />
-        <dataInput id="UserTask_3_TaskNameInput" name="TaskName" />
-        <dataInput id="UserTask_3_GroupIdInput" name="GroupId" />
-        <dataInput id="UserTask_3_PriorityInput" name="Priority" />
-        <inputSet>
-          <dataInputRefs>UserTask_3_CreatedByInput</dataInputRefs>
-          <dataInputRefs>UserTask_3_CommentInput</dataInputRefs>
-          <dataInputRefs>UserTask_3_SkippableInput</dataInputRefs>
-          <dataInputRefs>UserTask_3_LocaleInput</dataInputRefs>
-          <dataInputRefs>UserTask_3_TaskNameInput</dataInputRefs>
-          <dataInputRefs>UserTask_3_GroupIdInput</dataInputRefs>
-          <dataInputRefs>UserTask_3_PriorityInput</dataInputRefs>
-        </inputSet>
-        <outputSet>
-        </outputSet>
-      </ioSpecification>
-      <dataInputAssociation>
-        <targetRef>UserTask_3_CreatedByInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression"></from>
-          <to xsi:type="tFormalExpression">UserTask_3_CreatedByInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <targetRef>UserTask_3_CommentInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression"></from>
-          <to xsi:type="tFormalExpression">UserTask_3_CommentInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <targetRef>UserTask_3_SkippableInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">false</from>
-          <to xsi:type="tFormalExpression">UserTask_3_SkippableInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <targetRef>UserTask_3_LocaleInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">en-UK</from>
-          <to xsi:type="tFormalExpression">UserTask_3_LocaleInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <targetRef>UserTask_3_TaskNameInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">Task Name</from>
-          <to xsi:type="tFormalExpression">UserTask_3_TaskNameInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <targetRef>UserTask_3_GroupIdInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">boss</from>
-          <to xsi:type="tFormalExpression">UserTask_3_GroupIdInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <targetRef>UserTask_3_PriorityInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">1</from>
-          <to xsi:type="tFormalExpression">UserTask_3_PriorityInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <potentialOwner>
-        <resourceAssignmentExpression>
-          <formalExpression></formalExpression>
-        </resourceAssignmentExpression>
-      </potentialOwner>
-    </userTask>
-    <exclusiveGateway id="ExclusiveGateway_2" gatewayDirection="Converging" >
-    </exclusiveGateway>
-    <exclusiveGateway id="ExclusiveGateway_3" gatewayDirection="Diverging" >
-    </exclusiveGateway>
-
-    <!-- connections -->
-    <sequenceFlow id="StartEvent_2-UserTask_1" sourceRef="StartEvent_2" targetRef="UserTask_1" />
-    <sequenceFlow id="UserTask_1-UserTask_2" sourceRef="UserTask_1" targetRef="UserTask_2" />
-    <sequenceFlow id="UserTask_2-ExclusiveGateway_1" sourceRef="UserTask_2" targetRef="ExclusiveGateway_1" />
-    <sequenceFlow id="ExclusiveGateway_3-EndEvent_1" sourceRef="ExclusiveGateway_3" targetRef="EndEvent_1" name="approve" tns:priority="1" >
-      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return "approve".equals(r_boss);</conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="ExclusiveGateway_2-EndEvent_2" sourceRef="ExclusiveGateway_2" targetRef="EndEvent_2" />
-    <sequenceFlow id="ExclusiveGateway_1-UserTask_3" sourceRef="ExclusiveGateway_1" targetRef="UserTask_3" name="approve" tns:priority="1" >
-      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return "approve".equals(r_manager);</conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="ExclusiveGateway_1-ExclusiveGateway_2" sourceRef="ExclusiveGateway_1" targetRef="ExclusiveGateway_2" name="reject" tns:priority="1" >
-      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return "reject".equals(r_manager);</conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="ExclusiveGateway_3-ExclusiveGateway_2" sourceRef="ExclusiveGateway_3" targetRef="ExclusiveGateway_2" name="reject" tns:priority="1" >
-      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return "reject".equals(r_boss);</conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="UserTask_3-ExclusiveGateway_3" sourceRef="UserTask_3" targetRef="ExclusiveGateway_3" />
-
-  </process>
-
-  <bpmndi:BPMNDiagram>
-    <bpmndi:BPMNPlane bpmnElement="com.birghtd.bpm.leave.v3.leave" >
-      <bpmndi:BPMNShape bpmnElement="StartEvent_2" >
-        <dc:Bounds x="102" y="164" width="48" height="48" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- origin at X=0.0 Y=0.0 -->
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:g="http://www.jboss.org/drools/flow/gpd" xmlns:java="http://www.java.com/javaTypes" xmlns:tns="http://www.jboss.org/drools" xmlns="http://www.jboss.org/drools" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd http://www.jboss.org/drools drools.xsd http://www.bpsim.org/schemas/1.0 bpsim.xsd" id="Definition" exporter="org.eclipse.bpmn2.modeler.core" exporterVersion="1.1.6.Final-v20160330-1631-B1306" expressionLanguage="http://www.mvel.org/2.0" targetNamespace="http://www.jboss.org/drools" typeLanguage="http://www.java.com/javaTypes">
+  <bpmn2:itemDefinition id="ItemDefinition_3" isCollection="false" structureRef="Boolean"/>
+  <bpmn2:itemDefinition id="ItemDefinition_2" isCollection="false" structureRef="Integer"/>
+  <bpmn2:itemDefinition id="ItemDefinition_1" isCollection="false" structureRef="String"/>
+  <bpmn2:process id="com.birghtd.bpm.leave.v3.leave" tns:packageName="com.birghtd.bpm.leave.v3" tns:version="2" name="leave-v3" isExecutable="true" processType="Private">
+    <bpmn2:property id="employee" itemSubjectRef="ItemDefinition_1" name="employee"/>
+    <bpmn2:property id="reason" itemSubjectRef="ItemDefinition_1" name="reason"/>
+    <bpmn2:property id="hours" itemSubjectRef="ItemDefinition_2" name="hours"/>
+    <bpmn2:property id="comment" itemSubjectRef="ItemDefinition_1" name="comment"/>
+    <bpmn2:property id="r_manager" itemSubjectRef="ItemDefinition_1" name="r_manager"/>
+    <bpmn2:property id="r_boss" itemSubjectRef="ItemDefinition_1" name="r_boss"/>
+    <bpmn2:property id="mg_comment" itemSubjectRef="ItemDefinition_1" name="mg_comment"/>
+    <bpmn2:property id="boss_comment" itemSubjectRef="ItemDefinition_1" name="boss_comment"/>
+    <bpmn2:laneSet id="LaneSet_1">
+      <bpmn2:lane id="Lane_1" name="老板">
+        <bpmn2:extensionElements>
+          <tns:metaData name="elementname">
+            <tns:metaValue><![CDATA[老板]]></tns:metaValue>
+          </tns:metaData>
+        </bpmn2:extensionElements>
+        <bpmn2:flowNodeRef>EndEvent_1</bpmn2:flowNodeRef>
+        <bpmn2:flowNodeRef>EndEvent_2</bpmn2:flowNodeRef>
+        <bpmn2:flowNodeRef>UserTask_3</bpmn2:flowNodeRef>
+        <bpmn2:flowNodeRef>ExclusiveGateway_2</bpmn2:flowNodeRef>
+        <bpmn2:flowNodeRef>ExclusiveGateway_3</bpmn2:flowNodeRef>
+      </bpmn2:lane>
+      <bpmn2:lane id="Lane_2" name="经理">
+        <bpmn2:extensionElements>
+          <tns:metaData name="elementname">
+            <tns:metaValue><![CDATA[经理]]></tns:metaValue>
+          </tns:metaData>
+        </bpmn2:extensionElements>
+        <bpmn2:flowNodeRef>UserTask_2</bpmn2:flowNodeRef>
+        <bpmn2:flowNodeRef>ExclusiveGateway_1</bpmn2:flowNodeRef>
+      </bpmn2:lane>
+      <bpmn2:lane id="Lane_3" name="员工">
+        <bpmn2:extensionElements>
+          <tns:metaData name="elementname">
+            <tns:metaValue><![CDATA[员工]]></tns:metaValue>
+          </tns:metaData>
+        </bpmn2:extensionElements>
+        <bpmn2:flowNodeRef>StartEvent_2</bpmn2:flowNodeRef>
+        <bpmn2:flowNodeRef>UserTask_1</bpmn2:flowNodeRef>
+      </bpmn2:lane>
+    </bpmn2:laneSet>
+    <bpmn2:startEvent id="StartEvent_2" name="StartProcess">
+      <bpmn2:extensionElements>
+        <tns:metaData name="elementname">
+          <tns:metaValue><![CDATA[StartProcess]]></tns:metaValue>
+        </tns:metaData>
+      </bpmn2:extensionElements>
+      <bpmn2:outgoing>StartEvent_2-UserTask_1</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:userTask id="UserTask_1" name="申请">
+      <bpmn2:extensionElements>
+        <tns:metaData name="elementname">
+          <tns:metaValue><![CDATA[申请]]></tns:metaValue>
+        </tns:metaData>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>StartEvent_2-UserTask_1</bpmn2:incoming>
+      <bpmn2:outgoing>UserTask_1-UserTask_2</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_1">
+        <bpmn2:dataInput id="UserTask_1_CreatedByInput" name="CreatedBy"/>
+        <bpmn2:dataInput id="UserTask_1_CommentInput" name="Comment"/>
+        <bpmn2:dataInput id="UserTask_1_SkippableInput" name="Skippable"/>
+        <bpmn2:dataInput id="UserTask_1_LocaleInput" name="Locale"/>
+        <bpmn2:dataInput id="UserTask_1_TaskNameInput" name="TaskName"/>
+        <bpmn2:dataInput id="UserTask_1_GroupIdInput" name="GroupId"/>
+        <bpmn2:dataInput id="UserTask_1_PriorityInput" name="Priority"/>
+        <bpmn2:inputSet id="InputSet_1">
+          <bpmn2:dataInputRefs>UserTask_1_CreatedByInput</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>UserTask_1_CommentInput</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>UserTask_1_SkippableInput</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>UserTask_1_LocaleInput</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>UserTask_1_TaskNameInput</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>UserTask_1_GroupIdInput</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>UserTask_1_PriorityInput</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_1"/>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_1">
+        <bpmn2:targetRef>UserTask_1_CreatedByInput</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_1">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_1">#{employee}</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_2">UserTask_1_CreatedByInput</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_2">
+        <bpmn2:targetRef>UserTask_1_CommentInput</bpmn2:targetRef>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_3">
+        <bpmn2:targetRef>UserTask_1_SkippableInput</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_3">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_5">false</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_6">UserTask_1_SkippableInput</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_4">
+        <bpmn2:targetRef>UserTask_1_LocaleInput</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_4">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_7">en-UK</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_8">UserTask_1_LocaleInput</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_5">
+        <bpmn2:targetRef>UserTask_1_TaskNameInput</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_5">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_9">Task Name</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_10">UserTask_1_TaskNameInput</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_6">
+        <bpmn2:targetRef>UserTask_1_GroupIdInput</bpmn2:targetRef>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_7">
+        <bpmn2:targetRef>UserTask_1_PriorityInput</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_7">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_13">1</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_14">UserTask_1_PriorityInput</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:potentialOwner id="PotentialOwner_1">
+        <bpmn2:resourceAssignmentExpression id="ResourceAssignmentExpression_1">
+          <bpmn2:formalExpression id="FormalExpression_15">#{employee}</bpmn2:formalExpression>
+        </bpmn2:resourceAssignmentExpression>
+      </bpmn2:potentialOwner>
+    </bpmn2:userTask>
+    <bpmn2:userTask id="UserTask_2" name="经理审批">
+      <bpmn2:extensionElements>
+        <tns:metaData name="elementname">
+          <tns:metaValue><![CDATA[经理审批]]></tns:metaValue>
+        </tns:metaData>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>UserTask_1-UserTask_2</bpmn2:incoming>
+      <bpmn2:outgoing>UserTask_2-ExclusiveGateway_1</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_2">
+        <bpmn2:dataInput id="UserTask_2_CreatedByInput" name="CreatedBy"/>
+        <bpmn2:dataInput id="UserTask_2_CommentInput" name="Comment"/>
+        <bpmn2:dataInput id="UserTask_2_SkippableInput" name="Skippable"/>
+        <bpmn2:dataInput id="UserTask_2_LocaleInput" name="Locale"/>
+        <bpmn2:dataInput id="UserTask_2_TaskNameInput" name="TaskName"/>
+        <bpmn2:dataInput id="UserTask_2_GroupIdInput" name="GroupId"/>
+        <bpmn2:dataInput id="UserTask_2_PriorityInput" name="Priority"/>
+        <bpmn2:dataOutput id="DataOutput_1" itemSubjectRef="ItemDefinition_1" name="r_manager_out"/>
+        <bpmn2:inputSet id="InputSet_2">
+          <bpmn2:dataInputRefs>UserTask_2_CreatedByInput</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>UserTask_2_CommentInput</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>UserTask_2_SkippableInput</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>UserTask_2_LocaleInput</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>UserTask_2_TaskNameInput</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>UserTask_2_GroupIdInput</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>UserTask_2_PriorityInput</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_2">
+          <bpmn2:dataOutputRefs>DataOutput_1</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_8">
+        <bpmn2:targetRef>UserTask_2_CreatedByInput</bpmn2:targetRef>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_9">
+        <bpmn2:targetRef>UserTask_2_CommentInput</bpmn2:targetRef>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_10">
+        <bpmn2:targetRef>UserTask_2_SkippableInput</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_10">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_20">false</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_21">UserTask_2_SkippableInput</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_11">
+        <bpmn2:targetRef>UserTask_2_LocaleInput</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_11">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_22">en-UK</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_23">UserTask_2_LocaleInput</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_12">
+        <bpmn2:targetRef>UserTask_2_TaskNameInput</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_12">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_24">Task Name</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_25">UserTask_2_TaskNameInput</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_13">
+        <bpmn2:targetRef>UserTask_2_GroupIdInput</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_13">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_26">PM</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_27">UserTask_2_GroupIdInput</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_14">
+        <bpmn2:targetRef>UserTask_2_PriorityInput</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_14">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_28">1</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_29">UserTask_2_PriorityInput</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_1">
+        <bpmn2:sourceRef>DataOutput_1</bpmn2:sourceRef>
+        <bpmn2:targetRef>r_manager</bpmn2:targetRef>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:potentialOwner id="PotentialOwner_2">
+        <bpmn2:resourceAssignmentExpression id="ResourceAssignmentExpression_2"/>
+      </bpmn2:potentialOwner>
+    </bpmn2:userTask>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_1" gatewayDirection="Diverging">
+      <bpmn2:incoming>UserTask_2-ExclusiveGateway_1</bpmn2:incoming>
+      <bpmn2:outgoing>ExclusiveGateway_1-UserTask_3</bpmn2:outgoing>
+      <bpmn2:outgoing>ExclusiveGateway_1-ExclusiveGateway_2</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:endEvent id="EndEvent_1" name="approved">
+      <bpmn2:extensionElements>
+        <tns:metaData name="elementname">
+          <tns:metaValue><![CDATA[approved]]></tns:metaValue>
+        </tns:metaData>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>ExclusiveGateway_3-EndEvent_1</bpmn2:incoming>
+      <bpmn2:terminateEventDefinition id="TerminateEventDefinition_1"/>
+    </bpmn2:endEvent>
+    <bpmn2:endEvent id="EndEvent_2" name="rejected">
+      <bpmn2:extensionElements>
+        <tns:metaData name="elementname">
+          <tns:metaValue><![CDATA[rejected]]></tns:metaValue>
+        </tns:metaData>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>ExclusiveGateway_2-EndEvent_2</bpmn2:incoming>
+      <bpmn2:terminateEventDefinition id="TerminateEventDefinition_2"/>
+    </bpmn2:endEvent>
+    <bpmn2:userTask id="UserTask_3" name="老板审批">
+      <bpmn2:extensionElements>
+        <tns:metaData name="elementname">
+          <tns:metaValue><![CDATA[老板审批]]></tns:metaValue>
+        </tns:metaData>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>ExclusiveGateway_1-UserTask_3</bpmn2:incoming>
+      <bpmn2:outgoing>UserTask_3-ExclusiveGateway_3</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_3">
+        <bpmn2:dataInput id="UserTask_3_CreatedByInput" name="CreatedBy"/>
+        <bpmn2:dataInput id="UserTask_3_CommentInput" name="Comment"/>
+        <bpmn2:dataInput id="UserTask_3_SkippableInput" name="Skippable"/>
+        <bpmn2:dataInput id="UserTask_3_LocaleInput" name="Locale"/>
+        <bpmn2:dataInput id="UserTask_3_TaskNameInput" name="TaskName"/>
+        <bpmn2:dataInput id="UserTask_3_GroupIdInput" name="GroupId"/>
+        <bpmn2:dataInput id="UserTask_3_PriorityInput" name="Priority"/>
+        <bpmn2:dataOutput id="DataOutput_2" itemSubjectRef="ItemDefinition_1" name="r_boss_out"/>
+        <bpmn2:inputSet id="InputSet_3">
+          <bpmn2:dataInputRefs>UserTask_3_CreatedByInput</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>UserTask_3_CommentInput</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>UserTask_3_SkippableInput</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>UserTask_3_LocaleInput</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>UserTask_3_TaskNameInput</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>UserTask_3_GroupIdInput</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>UserTask_3_PriorityInput</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_3">
+          <bpmn2:dataOutputRefs>DataOutput_2</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_15">
+        <bpmn2:targetRef>UserTask_3_CreatedByInput</bpmn2:targetRef>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_16">
+        <bpmn2:targetRef>UserTask_3_CommentInput</bpmn2:targetRef>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_17">
+        <bpmn2:targetRef>UserTask_3_SkippableInput</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_17">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_35">false</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_36">UserTask_3_SkippableInput</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_18">
+        <bpmn2:targetRef>UserTask_3_LocaleInput</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_18">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_37">en-UK</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_38">UserTask_3_LocaleInput</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_19">
+        <bpmn2:targetRef>UserTask_3_TaskNameInput</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_19">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_39">Task Name</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_40">UserTask_3_TaskNameInput</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_20">
+        <bpmn2:targetRef>UserTask_3_GroupIdInput</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_20">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_41">boss</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_42">UserTask_3_GroupIdInput</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_21">
+        <bpmn2:targetRef>UserTask_3_PriorityInput</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_21">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_43">1</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_44">UserTask_3_PriorityInput</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_2">
+        <bpmn2:sourceRef>DataOutput_2</bpmn2:sourceRef>
+        <bpmn2:targetRef>r_boss</bpmn2:targetRef>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:potentialOwner id="PotentialOwner_3">
+        <bpmn2:resourceAssignmentExpression id="ResourceAssignmentExpression_3"/>
+      </bpmn2:potentialOwner>
+    </bpmn2:userTask>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_2" gatewayDirection="Converging">
+      <bpmn2:incoming>ExclusiveGateway_1-ExclusiveGateway_2</bpmn2:incoming>
+      <bpmn2:incoming>ExclusiveGateway_3-ExclusiveGateway_2</bpmn2:incoming>
+      <bpmn2:outgoing>ExclusiveGateway_2-EndEvent_2</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_3" gatewayDirection="Diverging">
+      <bpmn2:incoming>UserTask_3-ExclusiveGateway_3</bpmn2:incoming>
+      <bpmn2:outgoing>ExclusiveGateway_3-EndEvent_1</bpmn2:outgoing>
+      <bpmn2:outgoing>ExclusiveGateway_3-ExclusiveGateway_2</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="StartEvent_2-UserTask_1" sourceRef="StartEvent_2" targetRef="UserTask_1"/>
+    <bpmn2:sequenceFlow id="UserTask_1-UserTask_2" sourceRef="UserTask_1" targetRef="UserTask_2"/>
+    <bpmn2:sequenceFlow id="UserTask_2-ExclusiveGateway_1" sourceRef="UserTask_2" targetRef="ExclusiveGateway_1"/>
+    <bpmn2:sequenceFlow id="ExclusiveGateway_3-EndEvent_1" tns:priority="1" name="approve" sourceRef="ExclusiveGateway_3" targetRef="EndEvent_1">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_46" language="http://www.java.com/java">return &quot;approve&quot;.equals(r_boss);</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="ExclusiveGateway_2-EndEvent_2" sourceRef="ExclusiveGateway_2" targetRef="EndEvent_2"/>
+    <bpmn2:sequenceFlow id="ExclusiveGateway_1-UserTask_3" tns:priority="1" name="approve" sourceRef="ExclusiveGateway_1" targetRef="UserTask_3">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_47" language="http://www.java.com/java">return &quot;approve&quot;.equals(r_manager);</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="ExclusiveGateway_1-ExclusiveGateway_2" tns:priority="1" name="reject" sourceRef="ExclusiveGateway_1" targetRef="ExclusiveGateway_2">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_48" language="http://www.java.com/java">return &quot;reject&quot;.equals(r_manager);</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="ExclusiveGateway_3-ExclusiveGateway_2" tns:priority="1" name="reject" sourceRef="ExclusiveGateway_3" targetRef="ExclusiveGateway_2">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_49" language="http://www.java.com/java">return &quot;reject&quot;.equals(r_boss);</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="UserTask_3-ExclusiveGateway_3" sourceRef="UserTask_3" targetRef="ExclusiveGateway_3"/>
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_Process_1" bpmnElement="com.birghtd.bpm.leave.v3.leave">
+      <bpmndi:BPMNShape id="BPMNShape_Lane_1" bpmnElement="Lane_3" isHorizontal="false">
+        <dc:Bounds height="171.0" width="579.0" x="92.0" y="90.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_1">
+          <dc:Bounds height="13.0" width="18.0" x="372.0" y="93.0"/>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="UserTask_1" >
-        <dc:Bounds x="200" y="163" width="91" height="50" />
+      <bpmndi:BPMNShape id="BPMNShape_Lane_2" bpmnElement="Lane_2" isHorizontal="false">
+        <dc:Bounds height="201.0" width="579.0" x="92.0" y="320.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_2">
+          <dc:Bounds height="13.0" width="18.0" x="372.0" y="323.0"/>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="UserTask_2" >
-        <dc:Bounds x="293" y="384" width="86" height="50" />
+      <bpmndi:BPMNShape id="BPMNShape_Lane_3" bpmnElement="Lane_1" isHorizontal="false">
+        <dc:Bounds height="241.0" width="579.0" x="92.0" y="600.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_3">
+          <dc:Bounds height="13.0" width="18.0" x="372.0" y="603.0"/>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_1" >
-        <dc:Bounds x="440" y="384" width="48" height="48" />
+      <bpmndi:BPMNShape id="BPMNShape_StartEvent_1" bpmnElement="StartEvent_2">
+        <dc:Bounds height="48.0" width="48.0" x="102.0" y="164.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_4">
+          <dc:Bounds height="11.0" width="54.0" x="99.0" y="212.0"/>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="EndEvent_1" >
-        <dc:Bounds x="306" y="762" width="48" height="48" />
+      <bpmndi:BPMNShape id="BPMNShape_UserTask_1" bpmnElement="UserTask_1">
+        <dc:Bounds height="50.0" width="91.0" x="200.0" y="163.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_5">
+          <dc:Bounds height="13.0" width="18.0" x="236.0" y="181.0"/>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="EndEvent_2" >
-        <dc:Bounds x="164" y="654" width="48" height="48" />
+      <bpmndi:BPMNShape id="BPMNShape_UserTask_2" bpmnElement="UserTask_2">
+        <dc:Bounds height="50.0" width="86.0" x="293.0" y="384.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_6">
+          <dc:Bounds height="13.0" width="36.0" x="318.0" y="402.0"/>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="UserTask_3" >
-        <dc:Bounds x="570" y="653" width="91" height="50" />
+      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_1" bpmnElement="ExclusiveGateway_1" isMarkerVisible="true">
+        <dc:Bounds height="48.0" width="48.0" x="440.0" y="384.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_7"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_2" >
-        <dc:Bounds x="305" y="653" width="48" height="48" />
+      <bpmndi:BPMNShape id="BPMNShape_EndEvent_1" bpmnElement="EndEvent_1">
+        <dc:Bounds height="48.0" width="48.0" x="306.0" y="762.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_8">
+          <dc:Bounds height="11.0" width="38.0" x="311.0" y="810.0"/>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_3" >
-        <dc:Bounds x="450" y="653" width="48" height="48" />
+      <bpmndi:BPMNShape id="BPMNShape_EndEvent_2" bpmnElement="EndEvent_2">
+        <dc:Bounds height="48.0" width="48.0" x="164.0" y="654.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_9">
+          <dc:Bounds height="11.0" width="33.0" x="171.0" y="702.0"/>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="StartEvent_2-UserTask_1" >
-        <di:waypoint x="126" y="188" />
-        <di:waypoint x="176" y="188" />
-        <di:waypoint x="176" y="188" />
-        <di:waypoint x="200" y="188" />
-        <di:waypoint x="245" y="188" />
+      <bpmndi:BPMNShape id="BPMNShape_UserTask_3" bpmnElement="UserTask_3">
+        <dc:Bounds height="50.0" width="91.0" x="570.0" y="653.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_10">
+          <dc:Bounds height="13.0" width="36.0" x="597.0" y="671.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_2" bpmnElement="ExclusiveGateway_2" isMarkerVisible="true">
+        <dc:Bounds height="48.0" width="48.0" x="305.0" y="653.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_11"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_3" bpmnElement="ExclusiveGateway_3" isMarkerVisible="true">
+        <dc:Bounds height="48.0" width="48.0" x="450.0" y="653.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_12"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_1" bpmnElement="StartEvent_2-UserTask_1" sourceElement="BPMNShape_StartEvent_1" targetElement="BPMNShape_UserTask_1">
+        <di:waypoint xsi:type="dc:Point" x="150.0" y="188.0"/>
+        <di:waypoint xsi:type="dc:Point" x="166.0" y="188.0"/>
+        <di:waypoint xsi:type="dc:Point" x="166.0" y="188.0"/>
+        <di:waypoint xsi:type="dc:Point" x="190.0" y="188.0"/>
+        <di:waypoint xsi:type="dc:Point" x="200.0" y="188.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_13"/>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="UserTask_1-UserTask_2" >
-        <di:waypoint x="245" y="188" />
-        <di:waypoint x="336" y="188" />
-        <di:waypoint x="336" y="384" />
-        <di:waypoint x="336" y="409" />
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="UserTask_1-UserTask_2" sourceElement="BPMNShape_UserTask_1" targetElement="BPMNShape_UserTask_2">
+        <di:waypoint xsi:type="dc:Point" x="245.0" y="213.0"/>
+        <di:waypoint xsi:type="dc:Point" x="245.0" y="298.0"/>
+        <di:waypoint xsi:type="dc:Point" x="336.0" y="298.0"/>
+        <di:waypoint xsi:type="dc:Point" x="336.0" y="384.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_14"/>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="UserTask_2-ExclusiveGateway_1" >
-        <di:waypoint x="336" y="409" />
-        <di:waypoint x="409" y="409" />
-        <di:waypoint x="440" y="409" />
-        <di:waypoint x="464" y="408" />
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_3" bpmnElement="UserTask_2-ExclusiveGateway_1" sourceElement="BPMNShape_UserTask_2" targetElement="BPMNShape_ExclusiveGateway_1">
+        <di:waypoint xsi:type="dc:Point" x="379.0" y="409.0"/>
+        <di:waypoint xsi:type="dc:Point" x="389.0" y="408.0"/>
+        <di:waypoint xsi:type="dc:Point" x="440.0" y="408.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_15"/>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_3-EndEvent_1" >
-        <di:waypoint x="474" y="677" />
-        <di:waypoint x="475" y="786" />
-        <di:waypoint x="348" y="786" />
-        <di:waypoint x="330" y="786" />
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_4" bpmnElement="ExclusiveGateway_3-EndEvent_1" sourceElement="BPMNShape_ExclusiveGateway_3" targetElement="BPMNShape_EndEvent_1">
+        <di:waypoint xsi:type="dc:Point" x="474.0" y="701.0"/>
+        <di:waypoint xsi:type="dc:Point" x="474.0" y="786.0"/>
+        <di:waypoint xsi:type="dc:Point" x="364.0" y="786.0"/>
+        <di:waypoint xsi:type="dc:Point" x="354.0" y="786.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_16">
+          <dc:Bounds height="11.0" width="33.0" x="435.0" y="787.0"/>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_2-EndEvent_2" >
-        <di:waypoint x="329" y="677" />
-        <di:waypoint x="256" y="678" />
-        <di:waypoint x="206" y="678" />
-        <di:waypoint x="188" y="678" />
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_5" bpmnElement="ExclusiveGateway_2-EndEvent_2" sourceElement="BPMNShape_ExclusiveGateway_2" targetElement="BPMNShape_EndEvent_2">
+        <di:waypoint xsi:type="dc:Point" x="305.0" y="677.0"/>
+        <di:waypoint xsi:type="dc:Point" x="259.0" y="677.0"/>
+        <di:waypoint xsi:type="dc:Point" x="212.0" y="678.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_17"/>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_1-UserTask_3" >
-        <di:waypoint x="464" y="408" />
-        <di:waypoint x="615" y="409" />
-        <di:waypoint x="615" y="653" />
-        <di:waypoint x="615" y="678" />
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_6" bpmnElement="ExclusiveGateway_1-UserTask_3" sourceElement="BPMNShape_ExclusiveGateway_1" targetElement="BPMNShape_UserTask_3">
+        <di:waypoint xsi:type="dc:Point" x="488.0" y="408.0"/>
+        <di:waypoint xsi:type="dc:Point" x="615.0" y="408.0"/>
+        <di:waypoint xsi:type="dc:Point" x="615.0" y="643.0"/>
+        <di:waypoint xsi:type="dc:Point" x="615.0" y="653.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_18">
+          <dc:Bounds height="11.0" width="33.0" x="599.0" y="469.0"/>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_1-ExclusiveGateway_2" >
-        <di:waypoint x="464" y="408" />
-        <di:waypoint x="465" y="543" />
-        <di:waypoint x="330" y="543" />
-        <di:waypoint x="330" y="653" />
-        <di:waypoint x="329" y="677" />
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_7" bpmnElement="ExclusiveGateway_1-ExclusiveGateway_2" sourceElement="BPMNShape_ExclusiveGateway_1" targetElement="BPMNShape_ExclusiveGateway_2">
+        <di:waypoint xsi:type="dc:Point" x="464.0" y="432.0"/>
+        <di:waypoint xsi:type="dc:Point" x="464.0" y="542.0"/>
+        <di:waypoint xsi:type="dc:Point" x="329.0" y="542.0"/>
+        <di:waypoint xsi:type="dc:Point" x="329.0" y="653.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_19">
+          <dc:Bounds height="11.0" width="23.0" x="385.0" y="543.0"/>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_3-ExclusiveGateway_2" >
-        <di:waypoint x="474" y="677" />
-        <di:waypoint x="403" y="678" />
-        <di:waypoint x="355" y="678" />
-        <di:waypoint x="329" y="677" />
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_8" bpmnElement="ExclusiveGateway_3-ExclusiveGateway_2" sourceElement="BPMNShape_ExclusiveGateway_3" targetElement="BPMNShape_ExclusiveGateway_2">
+        <di:waypoint xsi:type="dc:Point" x="450.0" y="677.0"/>
+        <di:waypoint xsi:type="dc:Point" x="411.0" y="677.0"/>
+        <di:waypoint xsi:type="dc:Point" x="363.0" y="677.0"/>
+        <di:waypoint xsi:type="dc:Point" x="353.0" y="677.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_20">
+          <dc:Bounds height="11.0" width="23.0" x="391.0" y="679.0"/>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="UserTask_3-ExclusiveGateway_3" >
-        <di:waypoint x="615" y="678" />
-        <di:waypoint x="520" y="678" />
-        <di:waypoint x="500" y="678" />
-        <di:waypoint x="474" y="677" />
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_9" bpmnElement="UserTask_3-ExclusiveGateway_3" sourceElement="BPMNShape_UserTask_3" targetElement="BPMNShape_ExclusiveGateway_3">
+        <di:waypoint xsi:type="dc:Point" x="570.0" y="678.0"/>
+        <di:waypoint xsi:type="dc:Point" x="508.0" y="677.0"/>
+        <di:waypoint xsi:type="dc:Point" x="498.0" y="677.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_21"/>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
-
-</definitions>
+</bpmn2:definitions>

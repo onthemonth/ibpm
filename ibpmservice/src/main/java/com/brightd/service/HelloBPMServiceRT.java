@@ -8,5 +8,8 @@ public interface HelloBPMServiceRT {
     public String sayHelloKml(String str);
     public String sayHelloKmlPhase2(String str);
     public String sayHelloKmlLeaveV3(String str);
+    public String sayHelloKmlLeaveV3Phase1(String str);
+    public String sayHelloKmlLeaveV3Phase2(String str);
+    public String sayHelloKmlLeaveV3Phase3(String str);
     public String sayHelloKmlQuery(String str);
 }

@@ -148,6 +148,32 @@ public class HelloBPMServiceRTImpl implements HelloBPMServiceRT{
     }
 
     @Override
+    public String sayHelloKmlLeaveV3Phase1(String str) {
+
+        taskService.start(Long.parseLong(str), "krisv");
+        taskService.complete(Long.parseLong(str), "krisv", null);
+
+        return "";
+    }
+
+    @Override
+    public String sayHelloKmlLeaveV3Phase2(String str) {
+
+        taskService.claim(24l, "mary");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("r_manager","approve");
+        taskService.start(24l, "mary");
+        taskService.complete(24l, "mary", params);
+
+        return "";
+    }
+
+    @Override
+    public String sayHelloKmlLeaveV3Phase3(String str) {
+        return null;
+    }
+
+    @Override
     public String sayHelloKmlQuery(String str) {
 
         //RuntimeEngine runtimeEngine = runtimeManager.getRuntimeEngine(null);
